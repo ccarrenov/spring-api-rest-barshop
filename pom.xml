@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ws.barshop</groupId>
+	<artifactId>spring-api-rest-barshop</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>spring-api-rest-barshop</name>
+	<description>Generic BarShop</description>
+	<!-- INIT PARENT -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.5</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<!-- FINISH PARENT -->
+	<!-- INIT PROPERTIES -->
+	<properties>
+		<java.version>8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	<!-- FINISH PROPERTIES -->
+	<dependencies>
+		<!-- INIT SPRINGBOOT JPA DATABASE DEPENDENCY -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- FINISH SPRINGBOOT JPA DATABASE DEPENDENCY -->
+		<!-- INIT SPRINGBOOT WEB DEPENDENCY -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- FINISH SPRINGBOOT WEB DEPENDENCY -->
+		<!-- INIT MYSQL DATABASE ENGINE DEPENDENCY -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<!-- FINISH MYSQL DATABASE ENGINE DEPENDENCY -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- INIT SWAGGER WEB CLIENT FOR TESTING DEPENDENCY -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<!-- FINISH SWAGGER WEB CLIENT FOR TESTING DEPENDENCY -->
+		<!-- INIT LOOMBOK DEPENDENCY -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<!-- FINISH LOOMBOK DEPENDENCY -->
+		<!-- INIT H2 DATABASE ENGINE DEPENDENCY -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<!-- FINISH H2 DATABASE ENGINE DEPENDENCY -->
+		<!-- INIT LOG4J DEPENDENCY -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</dependency>
+		<!-- FINISH LOG4J DEPENDENCY -->
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
