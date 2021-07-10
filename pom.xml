@@ -43,12 +43,18 @@
 			<scope>compile</scope>
 		</dependency>
 		<!-- FINISH MYSQL DATABASE ENGINE DEPENDENCY -->
+		<!-- INIT ORACLE DATABASE ENGINE DEPENDENCY -->
+		<dependency>
+		    <groupId>com.oracle.database.jdbc</groupId>
+		    <artifactId>ojdbc8</artifactId>
+		    <scope>runtime</scope>
+		</dependency>		
+		<!-- FINISH ORACLE DATABASE ENGINE DEPENDENCY -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<!-- INIT SWAGGER WEB CLIENT FOR TESTING DEPENDENCY -->
 		<dependency>
 			<groupId>io.springfox</groupId>

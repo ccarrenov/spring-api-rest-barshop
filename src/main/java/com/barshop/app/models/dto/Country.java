@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import com.barshop.app.models.mapper.MapperAnnotation;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,32 +13,38 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-@JsonPropertyOrder({"id", "descripcion"})
 public class Country extends DataAccessObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@MapperAnnotation
-	@JsonProperty("id")	
+	@ApiModelProperty(position = 0)
+	@JsonProperty("id")
 	private int id;
 
 	@MapperAnnotation
-	@JsonProperty("name")	
+	@ApiModelProperty(position = 1)
+	@JsonProperty("name")
+
 	private String name;
-	
+
 	@MapperAnnotation
-	@JsonProperty("countryCode")	
-	private short countryCode;	
-	
+	@ApiModelProperty(position = 2)
+	@JsonProperty("countryCode")
+	private short countryCode;
+
 	@MapperAnnotation
-	@JsonProperty("twoDigitIso")	
-	private String twoDigitIso;		
-	
+	@ApiModelProperty(position = 3)
+	@JsonProperty("twoDigitIso")
+	private String twoDigitIso;
+
 	@MapperAnnotation
-	@JsonProperty("threeDigitIso")	
-	private String threeDigitIso;		
-	
+	@ApiModelProperty(position = 4)
+	@JsonProperty("threeDigitIso")
+	private String threeDigitIso;
+
 	@MapperAnnotation
-	@JsonProperty("countryCallingCode")	
-	private String countryCallingCode;	
+	@ApiModelProperty(position = 5)
+	@JsonProperty("countryCallingCode")
+	private String countryCallingCode;
 }
