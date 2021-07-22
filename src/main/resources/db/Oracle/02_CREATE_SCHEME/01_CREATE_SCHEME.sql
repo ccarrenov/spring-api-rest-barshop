@@ -4,7 +4,7 @@ CREATE SEQUENCE hibernate_sequence;
 -- -----------------------------------------------------
 -- DROP TABLE country;
 CREATE TABLE country (
-  id INT NOT NULL,
+  id NUMBER(19) NOT NULL,
   name VARCHAR(250) CONSTRAINT n_country_code NOT NULL,
   country_code NUMBER(5) CONSTRAINT C_country_code NOT NULL,
   two_digit_iso VARCHAR(2) CONSTRAINT t_country_code NOT NULL,

@@ -1,5 +1,7 @@
 package com.barshop.app.models.entity;
 
-public class Entity {
+import java.io.Serializable;
+
+public interface Entity extends Serializable {
 
 }

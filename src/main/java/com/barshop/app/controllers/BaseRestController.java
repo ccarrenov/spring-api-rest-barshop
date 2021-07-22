@@ -19,4 +19,7 @@ public interface BaseRestController<T extends DataAccessObject, I> {
 	public abstract ResponseEntity<Object> findById(@PathVariable I id);	
 		
 	public abstract ResponseEntity<Object> deleteById(@PathVariable I id);
+	
+	public abstract ResponseEntity<Object> count();
+	
 }

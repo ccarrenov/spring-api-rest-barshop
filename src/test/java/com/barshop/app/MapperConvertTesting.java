@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.barshop.app.models.dto.Country;
-import com.barshop.app.models.entity.CountryEntity;
+import com.barshop.app.models.entity.impl.CountryOracle;
 import com.barshop.app.models.mapper.MapperConvert;
 
 @SpringBootTest
@@ -25,8 +25,8 @@ class MapperConvertTesting {
 		dto.setThreeDigitIso("CHL");
 		dto.setCountryCallingCode("+56");
 		LOGGER.debug("DTO: " + dto);
-		MapperConvert<Country, CountryEntity> convert = new MapperConvert<>();
-		CountryEntity entity = convert.convertObject(dto, CountryEntity.class);
+		MapperConvert<Country, CountryOracle> convert = new MapperConvert<>();
+		CountryOracle entity = convert.convertObject(dto, CountryOracle.class);
 		assertEquals(dto.getId(), entity.getId());
 		assertEquals(dto.getName(), entity.getName());
 		assertEquals(dto.getCountryCode(), entity.getCountryCode());
@@ -37,7 +37,7 @@ class MapperConvertTesting {
 	
 	@Test
 	void simpleConvertEntityToDTO() {
-		CountryEntity entity = new CountryEntity();
+		CountryOracle entity = new CountryOracle();
 		entity.setId(1);
 		entity.setCountryCode(new Short("56"));
 		entity.setName("Chile");
@@ -45,7 +45,7 @@ class MapperConvertTesting {
 		entity.setThreeDigitIso("CHL");
 		entity.setCountryCallingCode("+56");
 		LOGGER.debug("ENTITY: " + entity);
-		MapperConvert<CountryEntity, Country> convert = new MapperConvert<>();
+		MapperConvert<CountryOracle, Country> convert = new MapperConvert<>();
 		Country dto = convert.convertObject(entity, Country.class);
 		assertEquals(dto.getId(), entity.getId());
 		assertEquals(dto.getName(), entity.getName());

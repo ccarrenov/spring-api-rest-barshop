@@ -26,7 +26,7 @@ public class BaseService {
 
 	public ResponseEntity<Object> responseEmpty(Object obj, HttpStatus status) {
 		if (obj == null)
-			return new ResponseEntity<>(WSMessageEnums.ERROR_NOT_FOND.getValue(), HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(WSMessageEnums.ERROR_NOT_FOUND.getValue(), HttpStatus.NOT_FOUND);
 		else
 			return new ResponseEntity<>(obj, status);
 	}

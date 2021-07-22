@@ -20,7 +20,7 @@ public class Country extends DataAccessObject implements Serializable {
 	@MapperAnnotation
 	@ApiModelProperty(position = 0)
 	@JsonProperty("id")
-	private int id;
+	private long id;
 
 	@MapperAnnotation
 	@ApiModelProperty(position = 1)

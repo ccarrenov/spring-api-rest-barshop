@@ -9,7 +9,7 @@ USE `barshop_bbdd` ;
 -- -----------------------------------------------------
 -- DROP TABLE IF EXISTS `country`;
 CREATE TABLE IF NOT EXISTS `country` (
-  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'Country Identifier',
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT 'Country Identifier',
   `name` VARCHAR(250) NOT NULL COMMENT 'Country Name',
   `country_code` SMALLINT NOT NULL COMMENT 'Country Code',
   `two_digit_iso` VARCHAR(2) NOT NULL COMMENT 'Two Digit ISO',

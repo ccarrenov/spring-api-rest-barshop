@@ -15,8 +15,9 @@ public final class ReflexionUtil {
 
 	private static final Logger LOGGER = Logger.getLogger(ReflexionUtil.class.getName());
 
-	private ReflexionUtil() {
-	}
+    private ReflexionUtil() {
+        throw new IllegalStateException("EntityConstant class");
+    }   
 
 	public static String builderGetName(String attribute) {
 		return "get" + attribute.substring(0, 1).toUpperCase() + attribute.substring(1, attribute.length());
@@ -47,22 +48,23 @@ public final class ReflexionUtil {
 		LOGGER.debug("getAttribute: " + attribute);
 		try {
 			Method getMethod = clazz.getClass().getMethod(builderGetName(attribute));
-			return getMethod.invoke(clazz, new Object[] {});
+			Object[] obj = new Object[] {};
+			return getMethod.invoke(clazz, obj);
 		} catch (Exception e) {
 			LOGGER.debug("Error Load Atributte Reflexion Class " + e.getMessage());
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	public static <T> Object getAttributeByAnnotation(T obj, Class<? extends Annotation> annotation) {
 		LOGGER.debug("getAttribute: " + annotation);
 		MapperFieldAnnotation field = fieldByAnnotation(obj, annotation);
-		if(field != null)
+		if (field != null)
 			return getAttribute(obj, field.getAttribute());
 		return null;
-	}	
-	
+	}
+
 	public static <T> MapperFieldAnnotation fieldByAnnotation(T obj, Class<? extends Annotation> annotation) {
 		final String className = obj.getClass().getName();
 		LOGGER.debug("origin clazzName: " + obj.getClass());
@@ -81,9 +83,22 @@ public final class ReflexionUtil {
 		}
 		return null;
 	}
-	
+
+	public static Object createNewInstance(String clazzName) {
+
+		Class<?> c;
+		try {
+			c = Class.forName(clazzName);
+			Constructor<?> builderWithoutParams = c .getConstructor();
+			return builderWithoutParams.newInstance();			
+		} catch (Exception e) {
+			LOGGER.debug("Error New Instance Reflexion Class" + e.getMessage());
+		}
+		return null;
+	}
+
 	public static <T> T createNewInstance(Class<T> clazzName) {
-		
+
 		T newInstance = null;
 		try {
 			Constructor<T> builderWithoutParams = clazzName.getConstructor();
@@ -93,10 +108,14 @@ public final class ReflexionUtil {
 		}
 		return newInstance;
 	}
-	
-	public static <T> MapperFieldAnnotation fieldByAnnotation(Class<T> clazzName, Class<? extends Annotation> annotation) {
-		return fieldByAnnotation(createNewInstance(clazzName), annotation);
-	}		
+
+	public static <T> MapperFieldAnnotation fieldByAnnotation(Class<T> clazzName,
+			Class<? extends Annotation> annotation) {
+		T newInstance = createNewInstance(clazzName);
+		if(newInstance==null)
+		    return null;
+	    return fieldByAnnotation(newInstance, annotation);
+	}
 
 	public static <T> Set<MapperFieldAnnotation> fieldsByAnnotation(T obj, Class<? extends Annotation> annotation) {
 		Set<MapperFieldAnnotation> fields = new LinkedHashSet<>();
@@ -112,7 +131,7 @@ public final class ReflexionUtil {
 					MapperFieldAnnotation fieldM = new MapperFieldAnnotation(field.getName(), field.getType(), value);
 					fields.add(fieldM);
 				}
-				LOGGER.debug("fields: " + fields);				
+				LOGGER.debug("fields: " + fields);
 			}
 		} catch (final Exception e) {
 			LOGGER.debug("Error Reflexion Class" + e.getMessage());
