@@ -38,11 +38,11 @@ public class EntityReflexionUtil {
         LOGGER.info("packageEntity: " + PACKAGE_ENTITY);
 
         if ("mysql".equalsIgnoreCase(engine)) {
-            String entityImpl = PACKAGE_ENTITY + "." + entity + "MySQL";
+            String entityImpl = PACKAGE_ENTITY + entity + "MySQL";
             LOGGER.info("entityImpl: " + entityImpl);
             return (Entity) ReflexionUtil.createNewInstance(entityImpl);
         } else if ("oracle".equalsIgnoreCase(engine)) {
-            String entityImpl = PACKAGE_ENTITY + "." + entity + "Oracle";
+            String entityImpl = PACKAGE_ENTITY + entity + "Oracle";
             LOGGER.info("entityImpl: " + entityImpl);
             return (Entity) ReflexionUtil.createNewInstance(entityImpl);
         }

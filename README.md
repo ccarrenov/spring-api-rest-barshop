@@ -30,7 +30,7 @@ DB_USER=barshop_bbdd
 
 ENGINE_DB=oracle
 
-![alt text](doc/img/eclipse-configuration.png)
+![alt text](doc/img/eclipse-configuration-oracle.png)
 
 
 MySQL
@@ -49,6 +49,7 @@ DB_USER=barshop_user
 
 ENGINE_DB=mysql
 
+![alt text](doc/img/eclipse-configuration-mysql.png)
 
 ## ENVIRONMENT JVM
 
@@ -60,10 +61,24 @@ ENGINE_DB=mysql
 
 ## HEROKU CONFIGURATION
 
-![alt text](doc/img/heroku-configuration.png)
+### ORACLE
+
+![alt text](doc/img/heroku-configuration-oracle.png)
+
+### MYSQL
+
+![alt text](doc/img/heroku-configuration-mysql.png)
+
 
 ## SWAGGER UI
 
-https://spring-api-rest-barshop.herokuapp.com/
+### ORACLE
+
+https://spring-api-rest-barshop-oracle.herokuapp.com/
+
+### MYSQL
+
+https://spring-api-rest-barshop-mysql.herokuapp.com/
+
 
 ![alt text](doc/img/spring-boot-rest-api.png)
