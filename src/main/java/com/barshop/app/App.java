@@ -31,7 +31,7 @@ public class App {
         LOGGER.info("conectordb: " +System.getenv("CONNECTOR_DB"));
         LOGGER.info("dbdomain: " +System.getenv("DB_DOMAIN"));
         LOGGER.info("engine: " +System.getenv("ENGINE_DB"));
-        LOGGER.info("loglvl: " +System.getenv("HB_LOG_LVL:debug"));
+        LOGGER.info("loglvl: " +System.getenv("HB_LOG_LVL"));
         
         SpringApplication.run(App.class, args);
     }
