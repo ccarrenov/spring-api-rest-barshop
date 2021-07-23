@@ -24,7 +24,7 @@ DB_PORT=1521
 DB_USER=barshop_bbdd
 ENGINE_DB=oracle
 
-![alt text](doc/img/eclipse-configuration)
+![alt text](doc/img/eclipse-configuration.png)
 
 
 MySQL
@@ -46,7 +46,7 @@ ENGINE_DB=mysql
 
 #HEROKU CONFIGURATION
 
-![alt text](doc/img/rest-service.png)
+![alt text](doc/img/heroku-configuration.png)
 
 ##SWAGGER UI
 
