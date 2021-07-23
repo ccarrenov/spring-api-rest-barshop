@@ -21,7 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableScheduling
-@EntityScan(basePackages = EntityReflexionUtil.PACKAGE_ENTITY+"${ENGINE_DB}")
+@EntityScan(basePackages = EntityReflexionUtil.PACKAGE_ENTITY + "${ENGINE_DB}")
 public class App {
 
     public static final String COUNTRY_TAG = "Country";

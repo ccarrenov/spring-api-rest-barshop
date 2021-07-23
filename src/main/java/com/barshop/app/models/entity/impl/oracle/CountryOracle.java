@@ -1,4 +1,4 @@
-package com.barshop.app.models.entity.impl;
+package com.barshop.app.models.entity.impl.oracle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

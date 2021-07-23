@@ -265,10 +265,10 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
         double pageSize = (double) page.getPageSize();
         long totalPage = DecimalUtil.roundDecimal(count / pageSize, 0, RoundingMode.UP).longValue();
 
-        if(totalPage < pageNumber) {
+        if (totalPage < pageNumber) {
             throw new NumberPageException(WSMessageEnums.ERROR_NUMBER_PAGE.getValue().replace("$1", String.valueOf(totalPage)));
         }
-        
+
         CriteriaBuilder builder = em.getCriteriaBuilder();
         // TYPE DEPLOY ZONE
         CriteriaQuery<E> query = (CriteriaQuery<E>) builder.createQuery(clazzE.getClass());

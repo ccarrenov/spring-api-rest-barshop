@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.barshop.app.models.dto.Country;
-import com.barshop.app.models.entity.impl.CountryOracle;
+import com.barshop.app.models.entity.impl.oracle.CountryOracle;
 import com.barshop.app.models.mapper.MapperConvert;
 
 @SpringBootTest
