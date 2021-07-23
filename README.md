@@ -17,11 +17,17 @@ Project web service scheme BarShop.
 ORACLE
 
 CONNECTOR_DB=thin:
+
 DB_DOMAIN=@192.168.1.1
+
 DB_INS_NAM=xe
+
 DB_PASS=15XXXXXXXXXXXXXX
+
 DB_PORT=1521
+
 DB_USER=barshop_bbdd
+
 ENGINE_DB=oracle
 
 ![alt text](doc/img/eclipse-configuration.png)
@@ -30,25 +36,33 @@ ENGINE_DB=oracle
 MySQL
 
 CONNECTOR_DB=//
+
 DB_DOMAIN=@192.168.1.1
+
 DB_INS_NAM=barshop_bbdd
+
 DB_PASS=15XXXXXXXXXXXXXX
+
 DB_PORT=3306
+
 DB_USER=barshop_user
+
 ENGINE_DB=mysql
 
 
 ## ENVIRONMENT JVM
-| #ENGINE | #COMMAND
-| #ORACLE | -DENGINE_DB=oracle -DCONNECTOR_DB=thin: -DDB_DOMAIN=@192.168.1.1 -DDB_PORT=1521 -DDB_INS_NAM=xe -DDB_USER=barshop_bbdd -DDB_PASS=15XXXXXXXXXXXXXX
-| #MySQL | -DENGINE_DB=oracle -DCONNECTOR_DB=// -DDB_DOMAIN=@192.168.1.1 -DDB_PORT=3306 -DDB_INS_NAM=barshop_bbdd -DDB_USER=barshop_user -DDB_PASS=15XXXXXXXXXXXXXX
+
+| ENGINE | COMMAND |
+| ------------- | ------------- |
+| ORACLE | -DENGINE_DB=oracle -DCONNECTOR_DB=thin: -DDB_DOMAIN=@192.168.1.1 -DDB_PORT=1521 -DDB_INS_NAM=xe -DDB_USER=barshop_bbdd -DDB_PASS=15XXXXXXXXXXXXXX |
+| MySQL | -DENGINE_DB=oracle -DCONNECTOR_DB=// -DDB_DOMAIN=@192.168.1.1 -DDB_PORT=3306 -DDB_INS_NAM=barshop_bbdd -DDB_USER=barshop_user -DDB_PASS=15XXXXXXXXXXXXXX |
 
 
-#HEROKU CONFIGURATION
+## HEROKU CONFIGURATION
 
 ![alt text](doc/img/heroku-configuration.png)
 
-##SWAGGER UI
+## SWAGGER UI
 
 https://spring-api-rest-barshop.herokuapp.com/
 
