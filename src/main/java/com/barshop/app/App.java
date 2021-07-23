@@ -1,5 +1,6 @@
 package com.barshop.app;
 
+import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +24,15 @@ public class App {
 
     public static final String COUNTRY_TAG = "Country";
 
+    private static final Logger LOGGER = Logger.getLogger(App.class.getName());
+    
     public static void main( String[] args ) {
+        LOGGER.info("engine: " +System.getenv("ENGINE_DB"));
+        LOGGER.info("conectordb: " +System.getenv("CONNECTOR_DB"));
+        LOGGER.info("dbdomain: " +System.getenv("DB_DOMAIN"));
+        LOGGER.info("engine: " +System.getenv("ENGINE_DB"));
+        LOGGER.info("loglvl: " +System.getenv("HB_LOG_LVL:debug"));
+        
         SpringApplication.run(App.class, args);
     }
 
