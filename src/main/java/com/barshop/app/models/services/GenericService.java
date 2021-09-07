@@ -42,7 +42,7 @@ public class GenericService<D extends DataAccessObject, E extends Entity, I> ext
             return response(dao.findAll(clazzNameD, clazzE), HttpStatus.OK);
         } catch (Exception ex) {
             LOGGER.error(WSMessageEnums.ERROR.getValue(), ex);
-            return msg(WSMessageEnums.ERROR.getValue(), WSMessageEnums.ERROR_FIND.getValue().replace("\\$1", messageError), HttpStatus.INTERNAL_SERVER_ERROR);
+            return msg(WSMessageEnums.ERROR.getValue(), WSMessageEnums.ERROR_FIND.getValue().replaceAll("\\$1", messageError), HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             LOGGER.info(WSMessageEnums.FINISH.getValue() + resource + FIND_ALL);
         }
@@ -84,7 +84,7 @@ public class GenericService<D extends DataAccessObject, E extends Entity, I> ext
         } catch (Exception ex) {
             LOGGER.debug(WSMessageEnums.ERROR.getValue(), ex);
             LOGGER.error(ex.getMessage());
-            return msg(WSMessageEnums.ERROR.getValue(), WSMessageEnums.ERROR_SAVE_OR_UPDATE.getValue().replace("\\$1", messageError), HttpStatus.INTERNAL_SERVER_ERROR);
+            return msg(WSMessageEnums.ERROR.getValue(), WSMessageEnums.ERROR_SAVE_OR_UPDATE.getValue().replaceAll("\\$1", messageError), HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             LOGGER.info(WSMessageEnums.FINISH.getValue() + resource + CREATE_OR_UPDATE);
         }

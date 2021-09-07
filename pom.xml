@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.5</version>
+		<version>2.5.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<!-- FINISH PARENT -->
@@ -52,11 +52,22 @@
 			<scope>runtime</scope>
 		</dependency>
 		<!-- FINISH ORACLE DATABASE ENGINE DEPENDENCY -->
+		<!-- INIT TESTING DEPENDENCY -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<!-- FINISH TESTING DEPENDENCY -->
 		<!-- INIT SWAGGER WEB CLIENT FOR TESTING DEPENDENCY -->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -75,12 +86,6 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 		<!-- FINISH LOOMBOK DEPENDENCY -->
-		<!-- INIT H2 DATABASE ENGINE DEPENDENCY -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-		<!-- FINISH H2 DATABASE ENGINE DEPENDENCY -->
 		<!-- INIT LOG4J DEPENDENCY -->
 		<dependency>
 			<groupId>log4j</groupId>
