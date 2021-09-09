@@ -64,7 +64,7 @@ public class GenericService<D extends DataAccessObject, E extends Entity, I> ext
             return msg(WSMessageEnums.ERROR.getValue() + ": " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
             LOGGER.error(WSMessageEnums.ERROR.getValue(), ex);
-            return msg(WSMessageEnums.ERROR.getValue() + ": " + WSMessageEnums.ERROR_FIND.getValue().replace("$1", messageError), HttpStatus.INTERNAL_SERVER_ERROR);
+            return msg(WSMessageEnums.ERROR.getValue() + ": " + WSMessageEnums.ERROR_FIND.getValue().replaceAll("$1", messageError), HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             LOGGER.info(WSMessageEnums.FINISH.getValue(), resource, FIND_ALL);
         }

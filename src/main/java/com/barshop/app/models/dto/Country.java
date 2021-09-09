@@ -15,9 +15,9 @@ import lombok.ToString;
 @Setter
 public class Country extends DataAccessObject implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4991168412652925793L;
 
-	@MapperAnnotation
+    @MapperAnnotation
 	@ApiModelProperty(position = 0)
 	@JsonProperty("id")
 	private long id;

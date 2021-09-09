@@ -1,10 +1,13 @@
 package com.barshop.app.models.services;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -26,13 +29,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.barshop.app.enums.WSMessageEnums;
+import com.barshop.app.exception.NumberPageException;
 import com.barshop.app.models.dao.GenericDAO;
+import com.barshop.app.models.dao.GenericPage;
 import com.barshop.app.models.dto.Country;
 import com.barshop.app.models.entity.impl.oracle.CountryOracle;
 
@@ -77,17 +84,6 @@ class GenericServiceTests {
         return newDTO;
     }
 
-    private CountryOracle DTOToEntity( Country dto ) {
-        CountryOracle newEntity = new CountryOracle();
-        newEntity.setId(dto.getId());
-        newEntity.setCountryCode(dto.getCountryCode());
-        newEntity.setName(dto.getName());
-        newEntity.setTwoDigitIso(dto.getTwoDigitIso());
-        newEntity.setThreeDigitIso(dto.getThreeDigitIso());
-        newEntity.setCountryCallingCode(dto.getCountryCallingCode());
-        return newEntity;
-    }
-
     private Country dto() {
         Country dto = dtoForCreate();
         dto.setId(id());
@@ -117,7 +113,6 @@ class GenericServiceTests {
     @Test
     void countNullPointerException() {
         LOGGER.debug("test countNullPointerException -> GenericService.count");
-        LOGGER.debug("countNullPointerException");
         ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR_NOT_COUNT.getValue(), HttpStatus.NOT_FOUND);
         when(dao.count(any(CountryOracle.class))).thenThrow(NullPointerException.class);
         ResponseEntity<Object> response = genericService.count(new CountryOracle(), "oracle");
@@ -144,7 +139,6 @@ class GenericServiceTests {
     void findAll() {
         LOGGER.debug("test findAll -> GenericService.findAll");
         List<Country> dtos = dtos();
-        LOGGER.debug("findAll");
         when(dao.findAll(any(), any(CountryOracle.class))).thenReturn(dtos);
         ResponseEntity<Object> response = genericService.findAll(Country.class, new CountryOracle(), "oracle", "Error DB");
         LOGGER.debug("response -> " + response);
@@ -324,6 +318,135 @@ class GenericServiceTests {
         when(dao.findById(any(), any(CountryOracle.class), any())).thenThrow(PersistenceException.class);
         ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR_NOT_FOUND.getValue().replaceAll("\\$1", "" + country.getId()), HttpStatus.INTERNAL_SERVER_ERROR);
         ResponseEntity<Object> response = genericService.findById(Country.class, new CountryOracle(), "oracle", country.getId());
+        LOGGER.debug("respDefault -> " + respDefault);
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertEquals(respDefault.getStatusCode(), response.getStatusCode());
+    }
+
+    @SuppressWarnings({ "serial", "unchecked" })
+    @Test()
+    void createAll() {
+        LOGGER.debug("test createAll -> GenericService.createAll");
+        List<Country> countries = dtos();
+        LOGGER.debug("country -> " + countries);
+        when(dao.createAll(any(), any(CountryOracle.class), any(), anyList(), anyInt())).thenReturn(countries);
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(countries, HttpStatus.OK);
+        ResponseEntity<Object> response = genericService.createAll(Country.class, new CountryOracle(), Long.class, "oracle", new ArrayList<Country>() {
+        }, 2, "");
+        LOGGER.debug("respDefault -> " + respDefault);
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertEquals(respDefault.getStatusCode(), response.getStatusCode());
+        List<Country> countriesDefault = (List<Country>) respDefault.getBody();
+        assertNotNull(countriesDefault);
+        assertFalse(countriesDefault.isEmpty());
+
+    }
+
+    @SuppressWarnings("serial")
+    @Test()
+    void createAllDuplicateKeyException() {
+        LOGGER.debug("test createAllDuplicateKeyException -> GenericService.createAll");
+        when(dao.createAll(any(), any(CountryOracle.class), any(), anyList(), anyInt())).thenThrow(DuplicateKeyException.class);
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR_DUPLICATE_REGISTER.getValue(), HttpStatus.INTERNAL_SERVER_ERROR);
+        ResponseEntity<Object> response = genericService.createAll(Country.class, new CountryOracle(), Long.class, "oracle", new ArrayList<Country>() {
+        }, 2, "");
+        LOGGER.debug("respDefault -> " + respDefault);
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertEquals(respDefault.getStatusCode(), response.getStatusCode());
+    }
+
+    @SuppressWarnings("serial")
+    @Test()
+    void createAllDataIntegrityViolationException() {
+        LOGGER.debug("test createAllDataIntegrityViolationException -> GenericService.createAll");
+        when(dao.createAll(any(), any(CountryOracle.class), any(), anyList(), anyInt())).thenThrow(DataIntegrityViolationException.class);
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR_INTEGRITY_REGISTER.getValue(), HttpStatus.INTERNAL_SERVER_ERROR);
+        ResponseEntity<Object> response = genericService.createAll(Country.class, new CountryOracle(), Long.class, "oracle", new ArrayList<Country>() {
+        }, 2, "");
+        LOGGER.debug("respDefault -> " + respDefault);
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertEquals(respDefault.getStatusCode(), response.getStatusCode());
+    }
+
+    @SuppressWarnings("serial")
+    @Test()
+    void createAllException() {
+        LOGGER.debug("test createAllException -> GenericService.createAll");
+        when(dao.createAll(any(), any(CountryOracle.class), any(), anyList(), anyInt())).thenThrow(PersistenceException.class);
+        String messageError = "E";
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR_SAVE_OR_UPDATE.getValue().replace("\\$1", messageError), HttpStatus.INTERNAL_SERVER_ERROR);
+        ResponseEntity<Object> response = genericService.createAll(Country.class, new CountryOracle(), Long.class, "oracle", new ArrayList<Country>() {
+        }, 2, messageError);
+        LOGGER.debug("respDefault -> " + respDefault);
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertEquals(respDefault.getStatusCode(), response.getStatusCode());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test()
+    void findAllTwo() throws NumberPageException {
+        LOGGER.debug("test findAllTwo -> GenericService.findAll");
+        List<Country> dtos = dtos();
+        when(dao.findAll(any(CountryOracle.class), any(PageRequest.class), any())).thenReturn(new GenericPage<>(dtos, 1, 1, 1, Sort.by("id"), 1));
+        ResponseEntity<Object> response = genericService.findAll(Country.class, new CountryOracle(), 1, 1, "oracle", "Error DB");
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertDoesNotThrow(() -> {
+            GenericPage<Country> list = (GenericPage<Country>) response.getBody();
+            LOGGER.debug("list.size() -> " + list.getSize());
+        });
+    }
+
+    @Test()
+    void findAllTwoNullPointerException() throws NumberPageException {
+        LOGGER.debug("test findAllTwoNullPointerException -> GenericService.findAll");
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR_NOT_COUNT.getValue(), HttpStatus.NOT_FOUND);
+        when(dao.findAll(any(CountryOracle.class), any(PageRequest.class), any())).thenThrow(NullPointerException.class);
+        ResponseEntity<Object> response = genericService.findAll(Country.class, new CountryOracle(), 1, 1, "oracle", "Error DB");
+        LOGGER.debug("respDefault -> " + respDefault);
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertEquals(respDefault.getStatusCode(), response.getStatusCode());
+    }
+
+    @Test()
+    void findAllTwoIllegalArgumentException() throws NumberPageException {
+        LOGGER.debug("test findAllTwoIllegalArgumentException -> GenericService.findAll");
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR.getValue() + ": " + WSMessageEnums.ERROR_ILEGAL_PAGE.getValue(), HttpStatus.BAD_REQUEST);
+        when(dao.findAll(any(CountryOracle.class), any(PageRequest.class), any())).thenThrow(IllegalArgumentException.class);
+        ResponseEntity<Object> response = genericService.findAll(Country.class, new CountryOracle(), 1, 1, "oracle", "Error DB");
+        LOGGER.debug("respDefault -> " + respDefault);
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertEquals(respDefault.getStatusCode(), response.getStatusCode());
+    }
+
+    @Test()
+    void findAllTwoNumberPageException() throws NumberPageException {
+        LOGGER.debug("test findAllTwoNumberPageException -> GenericService.findAll");
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR.getValue() + ": ", HttpStatus.BAD_REQUEST);
+        when(dao.findAll(any(CountryOracle.class), any(PageRequest.class), any())).thenThrow(NumberPageException.class);
+        ResponseEntity<Object> response = genericService.findAll(Country.class, new CountryOracle(), 1, 1, "oracle", "Error DB");
+        LOGGER.debug("respDefault -> " + respDefault);
+        LOGGER.debug("response -> " + response);
+        assertNotNull(response);
+        assertEquals(respDefault.getStatusCode(), response.getStatusCode());
+    }
+
+    @Test()
+    void findAllTwoException() throws NumberPageException {
+        LOGGER.debug("test findAllTwoException -> GenericService.findAll");
+        String messageError = "Error DB";
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR.getValue() + ": " + WSMessageEnums.ERROR_FIND.getValue().replaceAll("$1", messageError),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+        when(dao.findAll(any(CountryOracle.class), any(PageRequest.class), any())).thenThrow(PersistenceException.class);
+        ResponseEntity<Object> response = genericService.findAll(Country.class, new CountryOracle(), 1, 1, "oracle", messageError);
         LOGGER.debug("respDefault -> " + respDefault);
         LOGGER.debug("response -> " + response);
         assertNotNull(response);

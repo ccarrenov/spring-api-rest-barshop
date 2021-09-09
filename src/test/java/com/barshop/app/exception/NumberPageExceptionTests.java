@@ -7,7 +7,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
+@SpringBootTest
+@TestPropertySource(locations = "classpath:/application.properties")
 class NumberPageExceptionTests {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NumberPageExceptionTests.class);
@@ -16,7 +20,7 @@ class NumberPageExceptionTests {
     void init() {
         LOGGER.debug("testing init -> NumberPageException");
     }
-    
+
     @Test
     void createException() throws NumberPageException {
         LOGGER.debug("testing createException -> create NumberPageException");
