@@ -15,7 +15,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -34,7 +35,9 @@ import com.barshop.app.models.mapper.util.ReflexionUtil;
 @Repository
 public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
 
-    private static final Logger LOGGER = Logger.getLogger(GenericDAO.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);
+    
+    private static final String ID = "Id: {}";
 
     @PersistenceContext
     private EntityManager em;
@@ -58,14 +61,14 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
 
         MapperConvert<E, D> convert = new MapperConvert<>();
         MapperFieldAnnotation id = ReflexionUtil.fieldByAnnotation(clazzE, Id.class);
-        LOGGER.debug("id: " + id);
+        LOGGER.debug(ID, id);
         return convert.convertListObjects(findAll(clazzE, id.getAttribute()), clazzNameD);
     }
 
     public Page<D> findAll( E clazzE, PageRequest page, Class<D> clazzNameD ) throws NumberPageException {
 
         MapperFieldAnnotation id = ReflexionUtil.fieldByAnnotation(clazzE, Id.class);
-        LOGGER.debug("id: " + id);
+        LOGGER.debug(ID, id);
         return findAll(clazzE, id.getAttribute(), page, clazzNameD);
     }
 
@@ -88,7 +91,7 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
             if (Long.valueOf(id.toString()) == 0)
                 return true;
         } catch (Exception ex) {
-            LOGGER.debug("isIdEmpty: " + ex);
+            LOGGER.debug("isIdEmpty: {}", ex.getMessage(), ex);
         }
         return false;
     }
@@ -111,7 +114,7 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
                 return convert2.convertObject(entity, clazzNameD);
             }
         } catch (Exception ex) {
-            LOGGER.debug(ex);
+            LOGGER.debug(ex.getMessage(), ex);
             throw ex;
         }
     }
@@ -124,11 +127,11 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
         List<D> objectsD = new ArrayList<>();
         try {
             String engine = System.getenv("ENGINE_DB");
-            LOGGER.info("engine: " + engine);
+            LOGGER.info("engine: {}", engine);
             List<E> entites = convert.convertListObjects(objects, (Class<E>) clazzE.getClass());
             objectsD = convert2.convertListObjects(saveAll(entites, lot), clazzNameD);
         } catch (Exception ex) {
-            LOGGER.debug(ex);
+            LOGGER.debug(ex.getMessage(), ex);
             throw ex;
         }
         return objectsD;
@@ -137,7 +140,7 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
     @SuppressWarnings("unchecked")
     private I findId( E obj ) {
         final String className = obj.getClass().getName();
-        LOGGER.debug("find id entity: " + obj);
+        LOGGER.debug("find id entity: {}", obj);
         try {
             final Field[] fieldsC = Class.forName(className).getDeclaredFields();
             for (final Field field : fieldsC) {
@@ -149,7 +152,7 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.debug("Error Reflexion Class" + e.getMessage());
+            LOGGER.debug("Error Reflexion Class: {}", e.getMessage());
         }
 
         return null;
@@ -164,7 +167,7 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
         em.persist(entity);
         em.flush();
         Object id = ReflexionUtil.getAttributeByAnnotation(entity, Id.class);
-        LOGGER.debug("Id: " + id);
+        LOGGER.debug(ID, id);
         return entity;
     }
 
@@ -185,7 +188,7 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
 
         for (E entity : entities) {
             Object id = ReflexionUtil.getAttributeByAnnotation(entity, Id.class);
-            LOGGER.debug("Id: " + id);
+            LOGGER.debug(ID, id);
         }
         return entities;
     }
@@ -208,7 +211,7 @@ public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
 
         for (E entity : entities) {
             Object id = ReflexionUtil.getAttributeByAnnotation(entity, Id.class);
-            LOGGER.debug("Id: " + id);
+            LOGGER.debug(ID,  id);
         }
         return entities;
     }

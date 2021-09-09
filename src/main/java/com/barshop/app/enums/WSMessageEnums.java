@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum WSMessageEnums {
 
-	INIT("INIT "),
-	FINISH("FINISH "),
+	INIT("INIT {}{}"),
+	FINISH("FINISH {}{}"),
 	ERROR("ERROR"),
 	SUCCESS("SUCCESS"),
 	SUCCESS_DELETE("Registro eliminado."),	

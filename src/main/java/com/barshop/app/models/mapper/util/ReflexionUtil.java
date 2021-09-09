@@ -7,16 +7,17 @@ import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.barshop.app.models.mapper.MapperFieldAnnotation;
 
 public final class ReflexionUtil {
 
-	private static final Logger LOGGER = Logger.getLogger(ReflexionUtil.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReflexionUtil.class);
 
-    private ReflexionUtil() {
-        throw new IllegalStateException("EntityConstant class");
+    private ReflexionUtil() throws InstantiationException {
+        throw new InstantiationException("You can't create new instance of ReflexionUtil.");
     }   
 
 	public static String builderGetName(String attribute) {
@@ -33,32 +34,32 @@ public final class ReflexionUtil {
 	}
 
 	public static <T> T setAttribute(T clazz, MapperFieldAnnotation field) {
-		LOGGER.debug("setAttribute: " + field.getAttribute());
+		LOGGER.debug("setAttribute: {}", field.getAttribute());
 		try {
 			Method method = clazz.getClass().getMethod(builderSetName(field.getAttribute()), field.getType());
 			method.invoke(clazz, field.getValue());
 		} catch (Exception e) {
-			LOGGER.debug("Error Load Atributte Reflexion Class " + e.getMessage());
+			LOGGER.debug("Error Load Atributte Reflexion Class {}", e.getMessage());
 			e.printStackTrace();
 		}
 		return clazz;
 	}
 
 	public static <T> Object getAttribute(T clazz, String attribute) {
-		LOGGER.debug("getAttribute: " + attribute);
+		LOGGER.debug("getAttribute: {}", attribute);
 		try {
 			Method getMethod = clazz.getClass().getMethod(builderGetName(attribute));
 			Object[] obj = new Object[] {};
 			return getMethod.invoke(clazz, obj);
 		} catch (Exception e) {
-			LOGGER.debug("Error Load Atributte Reflexion Class " + e.getMessage());
+			LOGGER.debug("Error Load Atributte Reflexion Class {}", e.getMessage());
 			e.printStackTrace();
 			return null;
 		}
 	}
 
 	public static <T> Object getAttributeByAnnotation(T obj, Class<? extends Annotation> annotation) {
-		LOGGER.debug("getAttribute: " + annotation);
+		LOGGER.debug("getAttribute: {}",  annotation);
 		MapperFieldAnnotation field = fieldByAnnotation(obj, annotation);
 		if (field != null)
 			return getAttribute(obj, field.getAttribute());
@@ -67,8 +68,8 @@ public final class ReflexionUtil {
 
 	public static <T> MapperFieldAnnotation fieldByAnnotation(T obj, Class<? extends Annotation> annotation) {
 		final String className = obj.getClass().getName();
-		LOGGER.debug("origin clazzName: " + obj.getClass());
-		LOGGER.debug("origin object: " + obj);
+		LOGGER.debug("origin clazzName: {}", obj.getClass());
+		LOGGER.debug("origin object: {}",  obj);
 		try {
 			final Field[] fieldsC = Class.forName(className).getDeclaredFields();
 			for (final Field field : fieldsC) {
@@ -79,7 +80,7 @@ public final class ReflexionUtil {
 				}
 			}
 		} catch (final Exception e) {
-			LOGGER.debug("Error Reflexion Class" + e.getMessage());
+			LOGGER.debug("Error Reflexion Class -> {}", e.getMessage(), e);
 		}
 		return null;
 	}
@@ -92,7 +93,7 @@ public final class ReflexionUtil {
 			Constructor<?> builderWithoutParams = c .getConstructor();
 			return builderWithoutParams.newInstance();			
 		} catch (Exception e) {
-			LOGGER.debug("Error New Instance Reflexion Class" + e.getMessage());
+			LOGGER.debug("Error New Instance Reflexion Class -> {}",  e.getMessage(), e);
 		}
 		return null;
 	}
@@ -104,7 +105,7 @@ public final class ReflexionUtil {
 			Constructor<T> builderWithoutParams = clazzName.getConstructor();
 			newInstance = builderWithoutParams.newInstance();
 		} catch (Exception e) {
-			LOGGER.debug("Error New Instance Reflexion Class" + e.getMessage());
+			LOGGER.debug("Error New Instance Reflexion Class -> {}", e.getMessage(), e);
 		}
 		return newInstance;
 	}
@@ -120,8 +121,8 @@ public final class ReflexionUtil {
 	public static <T> Set<MapperFieldAnnotation> fieldsByAnnotation(T obj, Class<? extends Annotation> annotation) {
 		Set<MapperFieldAnnotation> fields = new LinkedHashSet<>();
 		final String className = obj.getClass().getName();
-		LOGGER.debug("origin clazzName: " + obj.getClass());
-		LOGGER.debug("origin object: " + obj);
+		LOGGER.debug("origin clazzName: {}", obj.getClass());
+		LOGGER.debug("origin object: {}", obj);
 		try {
 			final Field[] fieldsC = Class.forName(className).getDeclaredFields();
 			for (final Field field : fieldsC) {
@@ -131,10 +132,10 @@ public final class ReflexionUtil {
 					MapperFieldAnnotation fieldM = new MapperFieldAnnotation(field.getName(), field.getType(), value);
 					fields.add(fieldM);
 				}
-				LOGGER.debug("fields: " + fields);
+				LOGGER.debug("fields: {}",  fields);
 			}
 		} catch (final Exception e) {
-			LOGGER.debug("Error Reflexion Class" + e.getMessage());
+			LOGGER.debug("Error Reflexion Class -> {}", e.getMessage());
 		}
 		return fields;
 	}

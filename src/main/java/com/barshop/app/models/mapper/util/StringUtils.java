@@ -1,6 +1,5 @@
 package com.barshop.app.models.mapper.util;
 
-
 public final class StringUtils {
 
     private StringUtils() throws InstantiationException {
@@ -8,22 +7,37 @@ public final class StringUtils {
     }
 
     public static String concat( Object... objects ) {
-        StringBuilder sb = new StringBuilder();
+        return concatSeparate("", objects);
+    }
 
+    public static String concatSeparate( String separate, Object... objects ) {
+        StringBuilder sb = new StringBuilder();
+        int i = 1;
         for (Object obj : objects) {
             if (obj != null) {
-                sb.append(" ").append(obj);
+                sb.append(obj);
+                if (i++ <= objects.length - 1) {
+                    sb.append(separate);
+                }
             }
         }
         return sb.toString();
     }
+    
+    public static String format( String text, Object... values ) {
+        return formatRegex(text, '%', values);
+    }    
 
-    public static String replaceValues( String text, char regex, Object... values ) {
+    public static String formatRegex( String text, char regex, Object... values ) {
         StringBuilder sb = new StringBuilder();
         int j = 0;
         for (int i = 0; i < text.length(); i++) {
             if (text.charAt(i) == regex) {
-                sb.append(values[j]);
+                if (j < values.length) {
+                    sb.append(values[j]);
+                } else {
+                    sb.append(text.charAt(i));
+                }
                 j++;
             } else {
                 sb.append(text.charAt(i));
