@@ -25,35 +25,28 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.Setter;
 
 //@CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api/v1/country")
 @Api(value = "Country", tags = { App.COUNTRY_TAG })
+@Setter
 public class CountryController implements BaseRestController<Country, Long> {
 
     private static final Logger LOGGER = Logger.getLogger(CountryController.class.getName());
 
+    private final static String RESOURCE = "Country";
+
     @Autowired
     private GenericService<Country, Entity, Long> generic;
-
-    private final static String RESOURCE = "Country";
 
     @Autowired
     private Environment env;
 
     private final static int NUMBER_COMMIT_SIZE = 3500;
 
-    public CountryController(GenericService<Country, Entity, Long> generic) {
-        this.generic = generic;
-    }
-
-    public CountryController(GenericService<Country, Entity, Long> generic, Environment env) {
-        this.generic = generic;
-        this.env = env;
-    }
-
-    @ApiOperation(value = "Finds all countries", tags = { App.COUNTRY_TAG })
+    @ApiOperation(value = "Finds all countries", tags = { App.COUNTRY_TAG }, consumes = MediaType.APPLICATION_JSON_VALUE + "," + MediaType.TEXT_PLAIN_VALUE)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Country[].class), @ApiResponse(code = 500, message = "Failure") })
     @GetMapping(value = "", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
     @Override

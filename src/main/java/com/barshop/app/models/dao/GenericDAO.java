@@ -32,7 +32,10 @@ import com.barshop.app.models.mapper.MapperFieldAnnotation;
 import com.barshop.app.models.mapper.util.DecimalUtil;
 import com.barshop.app.models.mapper.util.ReflexionUtil;
 
+import lombok.Setter;
+
 @Repository
+@Setter
 public class GenericDAO<D extends DataAccessObject, E extends Entity, I> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);

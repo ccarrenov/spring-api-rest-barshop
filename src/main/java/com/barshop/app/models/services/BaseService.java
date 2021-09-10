@@ -1,16 +1,13 @@
 package com.barshop.app.models.services;
 
 import java.util.HashMap;
-
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 import com.barshop.app.enums.WSMessageEnums;
 
-@Service
 public class BaseService {
 
     public ResponseEntity<Object> msg( String attribute, String msg, HttpStatus status ) {

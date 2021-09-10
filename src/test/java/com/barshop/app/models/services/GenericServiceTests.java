@@ -58,7 +58,8 @@ class GenericServiceTests {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @BeforeEach
     void initUseCase() {
-        genericService = new GenericService(dao);
+        genericService = new GenericService();
+        genericService.setDao(dao);
     }
 
     private Long id() {

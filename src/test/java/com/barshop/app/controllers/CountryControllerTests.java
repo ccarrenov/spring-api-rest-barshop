@@ -53,7 +53,9 @@ class CountryControllerTests {
     @BeforeEach
     void init() {
         LOGGER.debug("init");
-        countryController = new CountryController(genericService, env);
+        countryController = new CountryController();
+        countryController.setEnv(env);
+        countryController.setGeneric(genericService);
         this.mvc = MockMvcBuilders.standaloneSetup(countryController).build();
     }
 
