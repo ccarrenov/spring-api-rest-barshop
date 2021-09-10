@@ -11,7 +11,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 import com.barshop.app.enums.WSMessageEnums;
 import com.barshop.app.exception.NumberPageException;
@@ -19,7 +18,6 @@ import com.barshop.app.models.dao.GenericDAO;
 import com.barshop.app.models.dto.DataAccessObject;
 import com.barshop.app.models.entity.Entity;
 
-@Service
 public class GenericService<D extends DataAccessObject, E extends Entity, I> extends BaseService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericService.class);
@@ -36,6 +34,10 @@ public class GenericService<D extends DataAccessObject, E extends Entity, I> ext
 
     @Autowired
     private GenericDAO<D, E, I> dao;
+
+    public GenericService(GenericDAO<D, E, I> dao) {
+        this.dao = dao;
+    }
 
     public ResponseEntity<Object> findAll( Class<D> clazzNameD, E clazzE, String resource, String messageError ) {
         LOGGER.info(WSMessageEnums.INIT.getValue(), resource, FIND_ALL);

@@ -9,15 +9,16 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 
 import com.barshop.app.enums.WSMessageEnums;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = "classpath:/application.properties")
 class BaseServiceTests {
 
@@ -29,6 +30,8 @@ class BaseServiceTests {
     @BeforeEach
     void init() {
         LOGGER.debug("testing init -> BaseService");
+        baseService = new BaseService();
+        
     }
 
     @Test

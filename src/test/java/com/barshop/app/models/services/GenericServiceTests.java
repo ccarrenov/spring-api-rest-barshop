@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -20,12 +20,13 @@ import java.util.stream.LongStream;
 import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -34,7 +35,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.barshop.app.enums.WSMessageEnums;
 import com.barshop.app.exception.NumberPageException;
@@ -43,18 +43,23 @@ import com.barshop.app.models.dao.GenericPage;
 import com.barshop.app.models.dto.Country;
 import com.barshop.app.models.entity.impl.oracle.CountryOracle;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = "classpath:/application.properties")
 class GenericServiceTests {
 
     private static final Logger LOGGER = Logger.getLogger(GenericServiceTests.class.getName());
 
-    @MockBean(classes = GenericDAO.class)
+    @Mock
     private GenericDAO<Country, CountryOracle, Long> dao;
-
+    
     @Autowired
     private GenericService<Country, CountryOracle, Long> genericService;
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @BeforeEach
+    void initUseCase() {
+        genericService = new GenericService(dao);
+    }
 
     private Long id() {
         Random random = new Random();
@@ -227,10 +232,9 @@ class GenericServiceTests {
     @Test()
     void deleteById() {
         LOGGER.debug("test deleteById -> GenericService.deleteById");
-        doThrow(new PersistenceException("Exception occured")).when(dao).deleteById(any(CountryOracle.class), any());
         Mockito.doAnswer(i -> {
             return null;
-        }).when(dao).deleteById(any(CountryOracle.class), any());
+        }).when(dao).deleteById(any(CountryOracle.class), anyLong());
         ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.SUCCESS_DELETE.getValue(), HttpStatus.OK);
         ResponseEntity<Object> response = genericService.deleteById(new CountryOracle(), "oracle", new Long(1));
         LOGGER.debug("respDefault -> " + respDefault);
@@ -242,7 +246,6 @@ class GenericServiceTests {
     @Test()
     void deleteByIdEmptyResultDataAccessException() {
         LOGGER.debug("test deleteByIdEmptyResultDataAccessException -> GenericService.deleteById");
-        doThrow(new PersistenceException("Exception occured")).when(dao).deleteById(any(CountryOracle.class), any());
         Mockito.doThrow(EmptyResultDataAccessException.class).when(dao).deleteById(any(CountryOracle.class), any());
         ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR_NOT_FOUND.getValue(), HttpStatus.NOT_FOUND);
         ResponseEntity<Object> response = genericService.deleteById(new CountryOracle(), "oracle", new Long(1));
@@ -255,7 +258,6 @@ class GenericServiceTests {
     @Test()
     void deleteByIdException() {
         LOGGER.debug("test deleteByIdException -> GenericService.deleteById");
-        doThrow(new PersistenceException("Exception occured")).when(dao).deleteById(any(CountryOracle.class), any());
         Mockito.doThrow(PersistenceException.class).when(dao).deleteById(any(CountryOracle.class), any());
         ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.ERROR_DELETE.getValue(), HttpStatus.INTERNAL_SERVER_ERROR);
         ResponseEntity<Object> response = genericService.deleteById(new CountryOracle(), "oracle", new Long(1));

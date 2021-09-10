@@ -2,6 +2,7 @@ package com.barshop.app.models.mapper.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 
 import com.barshop.app.enums.WSEnvironmentEnums;
 import com.barshop.app.models.entity.Entity;
@@ -29,19 +30,20 @@ public class EntityReflexionUtil {
         LOGGER.debug(ENV_VALUE, WSEnvironmentEnums.HB_LOG_LVL_MSG.getValue(), System.getenv(WSEnvironmentEnums.HB_LOG_LVL.getValue()));
     }
 
-    public static Entity newInstance( String entity ) {
+    public static Entity newInstance( String entity , Environment env) {
 
         environment();
-        String engine = System.getenv(WSEnvironmentEnums.ENGINE_DB.getValue());
+//        String engine = System.getenv(WSEnvironmentEnums.ENGINE_DB.getValue());
+        String engine = env.getProperty("engine.db");
         LOGGER.info("engine: {}", engine);
         LOGGER.info("packageEntity: " + PACKAGE_ENTITY);
 
         if ("mysql".equalsIgnoreCase(engine)) {
-            String entityImpl = PACKAGE_ENTITY + System.getenv(WSEnvironmentEnums.ENGINE_DB.getValue()) + "." + entity + "MySQL";
+            String entityImpl = PACKAGE_ENTITY + engine + "." + entity + "MySQL";
             LOGGER.info("entityImpl: {}", entityImpl);
             return (Entity) ReflexionUtil.createNewInstance(entityImpl);
         } else if ("oracle".equalsIgnoreCase(engine)) {
-            String entityImpl = PACKAGE_ENTITY + System.getenv(WSEnvironmentEnums.ENGINE_DB.getValue()) + "." + entity + "Oracle";
+            String entityImpl = PACKAGE_ENTITY + engine + "." + entity + "Oracle";
             LOGGER.info("entityImpl: {}", entityImpl);
             return (Entity) ReflexionUtil.createNewInstance(entityImpl);
         }
