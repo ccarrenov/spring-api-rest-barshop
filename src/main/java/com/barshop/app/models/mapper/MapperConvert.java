@@ -51,4 +51,10 @@ public class MapperConvert<D, E> {
         }
         return newList;
     }
+    
+    @SuppressWarnings("unchecked")
+    public E[]convertArrayObjects( List<D> obj1, Class<E> obj2 ) {
+        List<E> newList = convertListObjects( obj1, obj2 );        
+        return (E[])newList.toArray();
+    }    
 }

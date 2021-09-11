@@ -10,11 +10,13 @@ import org.springframework.data.domain.Sort;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class GenericPage <E> implements Page <E>{
 
 	private List<E> elements;

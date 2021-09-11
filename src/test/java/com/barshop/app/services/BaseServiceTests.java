@@ -1,4 +1,4 @@
-package com.barshop.app.models.services;
+package com.barshop.app.services;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

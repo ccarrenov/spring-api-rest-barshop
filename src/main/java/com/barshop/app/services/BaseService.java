@@ -1,4 +1,4 @@
-package com.barshop.app.models.services;
+package com.barshop.app.services;
 
 import java.util.HashMap;
 import java.util.Map;

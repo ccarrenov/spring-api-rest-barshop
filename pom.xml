@@ -92,20 +92,15 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.stefanbirkner</groupId>
-			<artifactId>system-rules</artifactId>
-			<version>1.19.0</version>
-		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.slf4j</groupId> -->
-		<!-- <artifactId>slf4j-api</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.slf4j</groupId> -->
-		<!-- <artifactId>slf4j-simple</artifactId> -->
-		<!-- </dependency> -->
 		<!-- FINISH LOG4J DEPENDENCY -->
+
+		<!-- INIT GSON CONVERT LIB DEPENDENCY -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<!-- FINISH GSON CONVERT LIB DEPENDENCY -->
+
 	</dependencies>
 
 	<build>

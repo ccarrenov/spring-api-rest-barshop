@@ -19,7 +19,7 @@ import com.barshop.app.models.dto.Country;
 import com.barshop.app.models.entity.Entity;
 import com.barshop.app.models.entity.EntityConstant;
 import com.barshop.app.models.mapper.util.EntityReflexionUtil;
-import com.barshop.app.models.services.GenericService;
+import com.barshop.app.services.GenericService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,7 +62,7 @@ public class CountryController implements BaseRestController<Country, Long> {
     @GetMapping(value = "page/", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
     public ResponseEntity<Object> findAll( @RequestParam("page") int page, @RequestParam("size") int size ) {
         Entity country = EntityReflexionUtil.newInstance(EntityConstant.COUNTRY_ENTITY, env);
-        return generic.findAll(Country.class, country, page, size, RESOURCE, "los countryes");
+        return generic.findAll(Country.class, country, page, size, RESOURCE, "los countries");
     }
 
     @ApiOperation(value = "Create or update a country", tags = { App.COUNTRY_TAG })
