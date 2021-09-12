@@ -46,7 +46,7 @@ public class CountryController implements BaseRestController<Country, Long> {
 
     private final static int NUMBER_COMMIT_SIZE = 3500;
 
-    @ApiOperation(value = "Finds all countries", tags = { App.COUNTRY_TAG }, consumes = MediaType.APPLICATION_JSON_VALUE + "," + MediaType.TEXT_PLAIN_VALUE)
+    @ApiOperation(value = "Finds all countries", tags = { App.COUNTRY_TAG })
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Country[].class), @ApiResponse(code = 500, message = "Failure") })
     @GetMapping(value = "", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
     @Override
@@ -103,7 +103,7 @@ public class CountryController implements BaseRestController<Country, Long> {
 
     @ApiOperation(value = "delete a country by id", tags = { App.COUNTRY_TAG })
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Country.class), @ApiResponse(code = 500, message = "Failure") })
-    @DeleteMapping(value = "/{id}", produces = { MediaType.TEXT_PLAIN_VALUE })
+    @DeleteMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
     @Override
     public ResponseEntity<Object> deleteById( Long id ) {
         Entity country = EntityReflexionUtil.newInstance(EntityConstant.COUNTRY_ENTITY, env);

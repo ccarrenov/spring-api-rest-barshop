@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,6 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.barshop.app.enums.WSMessageEnums;
 import com.barshop.app.models.dao.GenericPage;
 import com.barshop.app.models.dto.Country;
 import com.barshop.app.models.entity.Entity;
@@ -133,7 +135,6 @@ class CountryControllerTests {
     void findPage() throws Exception {
         LOGGER.debug("test findAll -> CountryController.findAll");
         List<Country> countries = dtos();
-        // new GenericPage<>(elementsD, pageNumber, (int) pageSize, (int) totalPage, Sort.by(attributeName), count);
         Page<Country> page = new GenericPage<>(countries, 1, 1, 1, Sort.by("id"), (long) countries.size());
         ResponseEntity<Object> respDefault = new ResponseEntity<>(page, HttpStatus.OK);
         when(genericService.findAll(any(), any(CountryOracle.class), anyInt(), anyInt(), any(), any())).thenReturn(respDefault);
@@ -147,7 +148,8 @@ class CountryControllerTests {
         LOGGER.debug("resp.getContentAsString() -> " + resp.getContentAsString());
         assertNotEquals("", resp.getContentAsString(), "ContentAsString (Response Body) is null");
         Gson gson = new Gson();
-        GenericPage<Country> respBody = gson.fromJson(resp.getContentAsString(), new TypeToken<GenericPage<Country>>() {}.getType());
+        GenericPage<Country> respBody = gson.fromJson(resp.getContentAsString(), new TypeToken<GenericPage<Country>>() {
+        }.getType());
         assertNotNull("response body is empty or error convert json object", respBody);
         assertFalse("response body is empty", respBody.getContent().isEmpty());
         assertEquals(countries.size(), respBody.getContent().size(), "Arrays size -> " + countries.size() + " != " + respBody.getSize());
@@ -161,9 +163,9 @@ class CountryControllerTests {
             assertEquals(country.getThreeDigitIso(), respBody.getContent().get(i).getThreeDigitIso(), "id: " + country.getThreeDigitIso() + " != " + respBody.getContent().get(i).getThreeDigitIso());
             assertEquals(country.getTwoDigitIso(), respBody.getContent().get(i).getTwoDigitIso(), "id: " + country.getTwoDigitIso() + " != " + respBody.getContent().get(i).getTwoDigitIso());
             LOGGER.debug(country);
-            LOGGER.debug(respBody.getContent().get(i));    
+            LOGGER.debug(respBody.getContent().get(i));
             i++;
-        
+
         }
     }
 
@@ -172,7 +174,6 @@ class CountryControllerTests {
         LOGGER.debug("test findById -> CountryController.findAll");
         Country country = dto();
         ResponseEntity<Object> respDefault = new ResponseEntity<>(country, HttpStatus.OK);
-        // generic.findById(Country.class, country, RESOURCE, id);
         when(genericService.findById(any(), any(CountryOracle.class), any(), any())).thenReturn(respDefault);
         when(env.getProperty(any())).thenReturn("oracle");
         MvcResult result = mvc.perform(get("/api/v1/country/{id}", country.getId()).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
@@ -191,5 +192,40 @@ class CountryControllerTests {
         assertEquals(country.getCountryCode(), respBody.getCountryCode(), "id: " + country.getCountryCode() + " != " + respBody.getCountryCode());
         assertEquals(country.getThreeDigitIso(), respBody.getThreeDigitIso(), "id: " + country.getThreeDigitIso() + " != " + respBody.getThreeDigitIso());
         assertEquals(country.getTwoDigitIso(), respBody.getTwoDigitIso(), "id: " + country.getTwoDigitIso() + " != " + respBody.getTwoDigitIso());
+    }
+
+    @Test
+    void count() throws Exception {
+        LOGGER.debug("test count -> CountryController.count");
+        Long size = 10L;
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(size, HttpStatus.OK);
+        when(genericService.count(any(), any())).thenReturn(respDefault);
+        when(env.getProperty(any())).thenReturn("oracle");
+        MvcResult result = mvc.perform(get("/api/v1/country/count").accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        assertNotNull("MvcResult is null", result);
+        MockHttpServletResponse resp = result.getResponse();
+        assertNotNull("MockHttpServletResponse is null", resp);
+        assertEquals(respDefault.getStatusCodeValue(), resp.getStatus(), "status code != " + respDefault.getStatusCodeValue());
+        LOGGER.debug("resp.getContentAsString() -> " + resp.getContentAsString());
+        assertNotEquals("", resp.getContentAsString(), "ContentAsString (Response Body) is null");
+        Gson gson = new Gson();
+        Long respBody = gson.fromJson(resp.getContentAsString(), Long.class);
+        assertEquals(size, respBody, "Error count");
+    }
+
+    @Test
+    void deleteById() throws Exception {
+        LOGGER.debug("test findById -> CountryController.deleteById");
+        Country country = dto();
+        ResponseEntity<Object> respDefault = new ResponseEntity<>(WSMessageEnums.SUCCESS_DELETE.getValue(), HttpStatus.OK);
+        when(genericService.deleteById(any(), any(), any())).thenReturn(respDefault);
+        when(env.getProperty(any())).thenReturn("oracle");
+        MvcResult result = mvc.perform(delete("/api/v1/country/{id}", country.getId()).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        assertNotNull("MvcResult is null", result);
+        MockHttpServletResponse resp = result.getResponse();
+        assertNotNull("MockHttpServletResponse is null", resp);
+        assertEquals(respDefault.getStatusCodeValue(), resp.getStatus(), "status code != " + respDefault.getStatusCodeValue());
+        LOGGER.debug("resp.getContentAsString() -> " + resp.getContentAsString());
+        assertNotEquals("", resp.getContentAsString(), "ContentAsString (Response Body) is null");
     }
 }
